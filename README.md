@@ -1,23 +1,69 @@
-[![Version](https://img.shields.io/packagist/v/creasi/laravel-package?style=flat-square)](https://packagist.org/packages/creasi/laravel-package)
-[![License](https://img.shields.io/packagist/l/creasi/laravel-package?style=flat-square)](https://github.com/creasico/laravel-package/blob/master/LICENSE)
-[![Actions Status](https://img.shields.io/github/workflow/status/creasico/laravel-package/Tests/master?style=flat-square&logo=github-actions)](https://github.com/creasico/laravel-package/actions)
+[![Version](https://img.shields.io/packagist/v/creasi/dusk-browserstack?style=flat-square)](https://packagist.org/packages/creasi/dusk-browserstack)
+[![License](https://img.shields.io/packagist/l/creasi/dusk-browserstack?style=flat-square)](https://github.com/creasico/laravel-dusk-browserstack/blob/master/LICENSE)
 
-# Laravel Package Template
+# Additional BrowserStack Supports for Laravel Dusk
 
-Our Laravel Package Template
+**WIP**
 
 ## Installation
 
 Use [Composer](https://getcomposer.org/)
 
 ```bash
-$ composer create-project creasi/laravel-package --prefer-dist
+$ composer require creasi/dusk-browserstack --dev
 ```
 
 ## Usage
 
-__SOON__
+1. Add `SupportsBrowsersStack` to your existing `DuskTestCase`, like so
 
+   ```diff
+     namespace Tests;
+  
+     use Laravel\Dusk\TestCase as BaseTestCase;
+   + use Creasi\Laravel\SupportsBrowserStack;
+   
+     abstract class DuskTestCase extends BaseTestCase
+     {
+         use CreatesApplication;
+   +     use SupportsBrowserStack;
+  
+         // ...
+     }
+   ```
+
+2. Update `prepare` method
+
+   ```diff
+     public static function prepare()
+     {
+   -     if (! static::runningInSail()) {
+   +     if (! static::runningInSail() && ! static::hasBrowserStackKey()) {
+             static::startChromeDriver();
+         }
+     }
+   ```
+
+3. Update `driver` method
+
+     ```diff
+     protected function driver()
+     {
+         // ...
+
+    +   $capabilities = DesiredCapabilities::chrome()
+    +       ->setCapability(ChromeOptions::CAPABILITY, $options);
+         
+         return RemoteWebDriver::create(
+    -       $_ENV['DUSK_DRIVER_URL'] ?? 'http://localhost:9515',
+    -       DesiredCapabilities::chrome()->setCapability(
+    -           ChromeOptions::CAPABILITY, $options
+    -       )
+    +       $this->getDriverURL(),
+    +       $this->withBrowserStackCapabilities($capabilities)
+         );
+     }
+     ```
 ## License
 
 This library is open-sourced software licensed under [MIT license](LICENSE).

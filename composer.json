@@ -1,9 +1,9 @@
 {
-    "name": "creasi/laravel-package",
-    "description": "Laravel Package Template",
-    "keywords": ["laravel", "package", "template"],
+    "name": "creasi/dusk-browserstack",
+    "description": "Additional BrowserSstack Supports for Laravel Dusk",
+    "keywords": ["laravel", "package", "dusk", "browserstack"],
     "license": "MIT",
-    "type": "project",
+    "type": "library",
     "authors": [
         {
             "name": "Creasi Developers",
@@ -11,14 +11,11 @@
         }
     ],
     "support": {
-        "source": "https://github.com/creasico/laravel-package"
+        "source": "https://github.com/creasico/laravel-dusk-browserstack"
     },
     "scripts": {
         "fix": [
             "pint --preset laravel"
-        ],
-        "test": [
-            "vendor/bin/phpunit --colors=always"
         ]
     },
     "autoload": {
@@ -33,13 +30,10 @@
     },
     "require": {
         "php": "^8.0",
-        "illuminate/contracts": "^8.0|^9.0"
+        "laravel/dusk": "^7.0"
     },
     "require-dev": {
-        "laravel/pint": "^1.1",
-        "mockery/mockery": "^1.4",
-        "orchestra/testbench": "^7.5",
-        "phpunit/phpunit": "^9.5"
+        "laravel/pint": "^1.1"
     },
     "config": {
         "preferred-install": "dist",
