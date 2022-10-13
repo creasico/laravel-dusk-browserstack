@@ -40,14 +40,7 @@
         "sort-packages": true
     },
     "extra": {
-        "laravel": {
-            "providers": [
-                "Creasi\\Laravel\\PackageServiceProvider"
-            ],
-            "aliases": {
-                "Package": "Creasi\\Laravel\\Facades\\Package"
-            }
-        }
+        "laravel": {}
     },
     "minimum-stability": "dev",
     "prefer-stable": true

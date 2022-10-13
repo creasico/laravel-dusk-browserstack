@@ -4,10 +4,10 @@ namespace Creasi\Laravel;
 
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Laravel\Dusk\Browser;
-use Symfony\Component\Process\Process;
 
 /**
  * @mixin \Laravel\Dusk\TestCase
+ *
  * @property-read static $browsers Illuminate\Support\Collection<int, Browser>
  */
 trait SupportsBrowserStack
