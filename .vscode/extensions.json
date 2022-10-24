@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "amiralizadeh9480.laravel-extra-intellisense",
+        "bmewburn.vscode-intelephense-client",
+        "editorconfig.editorconfig",
+        "github.vscode-pull-request-github",
+        "lokalise.i18n-ally",
+        "mikestead.dotenv",
+    ]
+}
