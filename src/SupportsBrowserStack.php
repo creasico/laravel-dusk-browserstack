@@ -30,9 +30,11 @@ trait SupportsBrowserStack
      */
     protected function tearDownSupportsBrowserStack(): void
     {
+        $status = $this->status();
+
         $this->executeBrowserStackCommand('setSessionStatus', [
-            'status' => $this->hasFailed() ? 'failed' : 'passed',
-            'reason' => $this->getStatusMessage(),
+            'status' => $status->asString(),
+            'reason' => $status->message(),
         ]);
     }
 
