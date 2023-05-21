@@ -33,7 +33,7 @@ trait SupportsBrowserStack
         $status = $this->status();
 
         $this->executeBrowserStackCommand('setSessionStatus', [
-            'status' => $status->asString(),
+            'status' => $status->isSuccess() ? 'passed' : 'failed',
             'reason' => $status->message(),
         ]);
     }
