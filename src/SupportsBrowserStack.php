@@ -49,7 +49,7 @@ trait SupportsBrowserStack
             // 'osVersion' => '10',
             'buildName' => $this->getBuildName(),
             'projectName' => $this->getProjectName(),
-            'sessionName' => \class_basename($this),
+            'sessionName' => $this->getSessionName(),
             'seleniumVersion' => '4.0.0',
         ]);
 
@@ -65,9 +65,15 @@ trait SupportsBrowserStack
     }
 
     /**
+     * Get session name
+     */
+    private function getSessionName(): string
+    {
+        return str($this)->classBasename()->replace('Test', '')->headline();
+    }
+
+    /**
      * Get build name
-     *
-     * @return string
      */
     private function getBuildName(): string
     {
@@ -82,8 +88,6 @@ trait SupportsBrowserStack
 
     /**
      * Get project name
-     *
-     * @return string
      */
     private function getProjectName(): string
     {
