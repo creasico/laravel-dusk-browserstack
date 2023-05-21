@@ -7,6 +7,7 @@ use Laravel\Dusk\Browser;
 
 /**
  * @mixin \Laravel\Dusk\TestCase
+ * @mixin \PHPUnit\Framework\TestCase
  *
  * @property-read static $browsers Illuminate\Support\Collection<int, Browser>
  */
