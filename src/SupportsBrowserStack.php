@@ -69,7 +69,7 @@ trait SupportsBrowserStack
      */
     private function getSessionName(): string
     {
-        return str($this)->classBasename()->replace('Test', '')->headline();
+        return str(\get_class($this))->classBasename()->replace('Test', '')->headline();
     }
 
     /**
