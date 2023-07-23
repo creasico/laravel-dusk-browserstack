@@ -1,0 +1,12 @@
+# Test Report Files
+# --------------------------
+*.local.php
+*.sqlite
+codeclimate.*.json
+codeclimate.json
+coverage
+reports
+coveralls.*.json
+coveralls.json
+lcov.*.info
+lcov.info
