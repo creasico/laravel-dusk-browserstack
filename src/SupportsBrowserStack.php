@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\Laravel;
+namespace Creasi\DuskBrowserstack;
 
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Laravel\Dusk\Browser;
@@ -15,8 +15,6 @@ trait SupportsBrowserStack
 {
     /**
      * Determine if the BrowserStack Key and User is set.
-     *
-     * @return bool
      */
     private static function hasBrowserStackKey(): bool
     {
@@ -25,8 +23,6 @@ trait SupportsBrowserStack
 
     /**
      * Sending assertion result back to BrowserStack.
-     *
-     * @return void
      */
     protected function tearDownSupportsBrowserStack(): void
     {

@@ -16,11 +16,17 @@
     "scripts": {
         "fix": [
             "pint --preset laravel"
+        ],
+        "test": [
+            "testbench package:test --coverage --ansi"
+        ],
+        "testbench": [
+            "testbench"
         ]
     },
     "autoload": {
         "psr-4": {
-            "Creasi\\Laravel\\": "src"
+            "Creasi\\DuskBrowserstack\\": "src"
         }
     },
     "autoload-dev": {
@@ -29,19 +35,25 @@
         }
     },
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "laravel/dusk": "^7.0",
-        "phpunit/phpunit": "^10.0.1"
+        "orchestra/testbench": "^8.5"
     },
     "require-dev": {
-        "laravel/pint": "^1.1"
+        "inertiajs/inertia-laravel": "^0.6.9",
+        "laravel/pint": "^1.1",
+        "nunomaduro/collision": "^7.4"
     },
     "config": {
         "preferred-install": "dist",
         "sort-packages": true
     },
     "extra": {
-        "laravel": {}
+        "laravel": {
+            "providers": [
+                "Creasi\\DuskBrowserstack\\ServiceProvider"
+            ]
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
