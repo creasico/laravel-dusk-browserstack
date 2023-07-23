@@ -1,7 +1,7 @@
 {
     "version": "0.1.2",
     "private": true,
-    "packageManager": "pnpm@7.5.0",
+    "packageManager": "pnpm@8.5.0",
     "author": "Creasi Developers <developers@creasi.co>",
     "repository": "github:creasico/laravel-package",
     "scripts": {
@@ -9,14 +9,20 @@
         "release": "standard-version -s"
     },
     "devDependencies": {
-        "@commitlint/cli": "^17.1.2",
-        "@commitlint/config-conventional": "^17.1.0",
-        "husky": "^8.0.1",
+        "@commitlint/cli": "^17.6.7",
+        "@commitlint/config-conventional": "^17.6.7",
+        "husky": "^8.0.3",
+        "lint-staged": "^13.2.3",
         "standard-version": "^9.5.0"
     },
     "commitlint": {
         "extends": [
             "@commitlint/config-conventional"
+        ]
+    },
+    "lint-staged": {
+        "{config,database,src,scripts,tests}/**/*.php": [
+            "php vendor/bin/pint --preset laravel"
         ]
     },
     "standard-version": {}
