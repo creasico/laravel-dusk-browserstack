@@ -21,7 +21,7 @@ $ composer require creasi/dusk-browserstack --dev
      namespace Tests;
   
      use Laravel\Dusk\TestCase as BaseTestCase;
-   + use Creasi\Laravel\SupportsBrowserStack;
+   + use Creasi\DuskBrowserStack\SupportsBrowserStack;
    
      abstract class DuskTestCase extends BaseTestCase
      {

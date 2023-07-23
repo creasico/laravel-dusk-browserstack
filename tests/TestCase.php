@@ -2,7 +2,7 @@
 
 namespace Creasi\Tests;
 
-use Creasi\DuskBrowserstack\ServiceProvider;
+use Creasi\DuskBrowserStack\ServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra

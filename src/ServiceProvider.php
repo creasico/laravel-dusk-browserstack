@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\DuskBrowserstack;
+namespace Creasi\DuskBrowserStack;
 
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use Laravel\Dusk\Browser;

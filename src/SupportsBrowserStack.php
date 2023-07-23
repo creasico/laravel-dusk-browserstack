@@ -1,6 +1,6 @@
 <?php
 
-namespace Creasi\DuskBrowserstack;
+namespace Creasi\DuskBrowserStack;
 
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Laravel\Dusk\Browser;
