@@ -6,8 +6,10 @@ Desktop.ini
 .DS_Store
 ._*
 *.cache
+*.crt
 *.log
 *.old
+*.key
 *.pem
 *.tmp
 *.zip
@@ -21,17 +23,16 @@ Desktop.ini
 coveralls-upload.json
 dist
 node_modules
-storage/*.key
-tests/clover.xml
 vendor
 
 # Node.js lock files
+.pnpm-store
 package-lock.json
 yarn.lock
-pnpm-lock.yaml
 
 # But Keep these
 # --------------------------
 !.env.example
+!.env.*.example
 !.htaccess
 !.gitkeep
