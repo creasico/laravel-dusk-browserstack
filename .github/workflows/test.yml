@@ -1,7 +1,7 @@
 name: Tests
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [main]
   push:
     branches: [main]
@@ -35,6 +35,8 @@ jobs:
           ini-values: error_reporting=E_ALL
           tools: composer:v2
           coverage: xdebug
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get Composer cache directory
         id: composer-cache
@@ -55,9 +57,10 @@ jobs:
           command: composer update --prefer-dist --no-interaction --no-progress
 
       - name: Run tests
-        run: composer test
+        run: composer test -- --coverage
 
       - name: Generate reports for CodeClimate
+        if: github.actor != 'dependabot[bot]'
         env:
           COVERAGE_FILE: tests/reports/clover.xml
           CODECLIMATE_REPORT: ${{ github.workspace }}/tests/reports/codeclimate.${{ matrix.php }}.json
@@ -67,14 +70,16 @@ jobs:
 
       - name: Upload tests reports
         uses: actions/upload-artifact@v3
+        if: github.actor != 'dependabot[bot]'
         with:
           name: test-reports
           path: tests/reports
 
   reports:
     name: Report Test Coverages
-    needs: tests
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
+    needs: tests
 
     steps:
       - name: Download test reports

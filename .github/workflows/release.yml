@@ -15,11 +15,12 @@ jobs:
       uses: actions/checkout@v1
 
     - name: Read Changelog file
-      run: npx @feryardiant/read-changelog > PUBLISH.txt
+      run: npx @feryardiant/read-changelog > PUBLISH.md
 
     - name: Publish
       uses: softprops/action-gh-release@v1
       env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        body_path: PUBLISH.txt
+        body_path: PUBLISH.md
+        generate_release_notes: true
