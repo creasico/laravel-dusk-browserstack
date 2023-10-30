@@ -19,7 +19,7 @@ trait SupportsBrowserStack
     private static function hasBrowserStackKey(): bool
     {
         return (isset($_SERVER['BROWSERSTACK_ACCESS_KEY']) || isset($_ENV['BROWSERSTACK_ACCESS_KEY']))
-            && (isset($_SERVER['BROWSERSTACK_LOCAL']) || isset($_ENV['BROWSERSTACK_LOCAL']));
+            && env('BROWSERSTACK_LOCAL_IDENTIFIER') !== null;
     }
 
     /**
@@ -50,10 +50,10 @@ trait SupportsBrowserStack
             'seleniumVersion' => '4.0.0',
         ]);
 
-        if ($runLocaly = env('BROWSERSTACK_LOCAL'.false)) {
+        if ($localId = env('BROWSERSTACK_LOCAL_IDENTIFIER')) {
             $caps
-                ->setCapability('browserstack.local', $runLocaly)
-                ->setCapability('browserstack.localIdentifier', env('BROWSERSTACK_LOCAL_IDENTIFIER'));
+                ->setCapability('browserstack.local', true)
+                ->setCapability('browserstack.localIdentifier', $localId);
         }
 
         return $caps;
