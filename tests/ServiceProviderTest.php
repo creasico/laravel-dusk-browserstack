@@ -5,16 +5,27 @@ declare(strict_types=1);
 namespace Creasi\Tests;
 
 use Facebook\WebDriver\Exception\TimeoutException;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\WebDriverWait;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Dusk\Browser;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
-use SebastianBergmann\CodeCoverage\Driver\Driver;
 
 #[Group('serviceProvider')]
 class ServiceProviderTest extends TestCase
 {
     use WithFaker;
+
+    private function mockWebDriver()
+    {
+        /** @var \Mockery\MockInterface|RemoteWebDriver */
+        $driver = $this->mock(RemoteWebDriver::class);
+
+        $driver->shouldReceive('wait')->andReturn(new WebDriverWait($driver));
+
+        return $driver;
+    }
 
     #[Test]
     #[Group('dusk')]
@@ -27,7 +38,7 @@ class ServiceProviderTest extends TestCase
     #[Group('dusk')]
     public function should_throws_an_exception_if_the_count_doesnt_increase()
     {
-        $driver = $this->mock(Driver::class);
+        $driver = $this->mockWebDriver();
 
         $driver->shouldReceive('executeScript')
             ->with('return window.__inertiaNavigatedCount;')
@@ -53,7 +64,7 @@ class ServiceProviderTest extends TestCase
     #[Group('dusk')]
     public function should_passes_when_the_count_increases()
     {
-        $driver = $this->mock(Driver::class);
+        $driver = $this->mockWebDriver();
 
         $driver->shouldReceive('executeScript')
             ->with('return window.__inertiaNavigatedCount;')
