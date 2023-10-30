@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/creasico/laravel-package/compare/v0.2.0...v0.2.1) (2023-10-30)
+
+
+### Features
+
+* add indicator to determine whether browserstack local is running ([f967662](https://github.com/creasico/laravel-package/commit/f9676627c490a3ec65c870f2b2ddb21867756422))
+
+
+### Bug Fixes
+
+* **tests:** fix false-positive test ([b9a21aa](https://github.com/creasico/laravel-package/commit/b9a21aa7caf1970abd415930cbc3a4bc9afd9081))
+
 ## [0.2.0](https://github.com/creasico/laravel-package/compare/v0.1.2...v0.2.0) (2023-07-23)
 
 
