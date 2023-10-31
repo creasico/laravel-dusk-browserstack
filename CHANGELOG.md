@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.2](https://github.com/creasico/laravel-package/compare/v0.2.1...v0.2.2) (2023-10-31)
+
+
+### Bug Fixes
+
+* fix issue when this package runs in gh action ([7f6c28c](https://github.com/creasico/laravel-package/commit/7f6c28cc58d6be37cdbaa2e7985a49927f6ccd3c))
+
 ### [0.2.1](https://github.com/creasico/laravel-package/compare/v0.2.0...v0.2.1) (2023-10-30)
 
 
