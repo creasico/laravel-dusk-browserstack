@@ -20,6 +20,8 @@ Desktop.ini
 .env.*
 .env
 .php-version
+.tool-versions
+/*.session.sql
 coveralls-upload.json
 dist
 node_modules
