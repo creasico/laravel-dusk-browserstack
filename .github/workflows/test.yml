@@ -64,8 +64,6 @@ jobs:
         env:
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-          # BROWSERSTACK_PROJECT_NAME: ${{ github.repository }}
-          # BROWSERSTACK_BUILD_NAME: ${{ github.ref_name }}-${{ github.sha }}
         run: |
           composer testbench dusk:browserstack-local
           composer test -- --coverage

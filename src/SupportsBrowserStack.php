@@ -77,6 +77,11 @@ trait SupportsBrowserStack
         return str(static::class)->classBasename()->replace('Test', '')->headline();
     }
 
+    /**
+     * Get commit sha in short format.
+     *
+     * @link https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
+     */
     private static function getCommitSha(): string
     {
         if ($githubSha = \env('GITHUB_SHA')) {
@@ -86,21 +91,32 @@ trait SupportsBrowserStack
         return \exec('echo "$(git rev-parse --short HEAD)"');
     }
 
+    /**
+     * Get branch name, but if it's a pull request, use the PR number.
+     *
+     * @link https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
+     */
     private static function getBranchName(): string
     {
+        static $result;
+
+        if ($result) {
+            return $result;
+        }
+
         $githubRef = \env('GITHUB_REF');
 
         if (! $githubRef) {
-            return \exec('echo "$(git branch --show-current)"');
+            return $result = \exec('echo "$(git branch --show-current)"');
         }
 
         $branchOrPullRequest = \explode('/', $githubRef)[2];
 
         if (\env('GITHUB_EVENT_NAME') === 'pull_request') {
-            return \sprintf('PR #%s', $branchOrPullRequest);
+            return $result = \sprintf('PR #%s', $branchOrPullRequest);
         }
 
-        return $branchOrPullRequest;
+        return $result = $branchOrPullRequest;
     }
 
     /**
@@ -108,16 +124,22 @@ trait SupportsBrowserStack
      */
     private static function getBuildName(): string
     {
+        static $result;
+
+        if ($result) {
+            return $result;
+        }
+
         $build = env('BROWSERSTACK_BUILD_NAME');
 
         if ($build && (\strlen($build) > 0 && \strlen($build) <= 255)) {
-            return $build;
+            return $result = $build;
         }
 
         $sha = self::getCommitSha();
         $branch = self::getBranchName();
 
-        return \sprintf('[%s] %s', $sha, $branch);
+        return $result = \sprintf('[%s] %s', $sha, $branch);
     }
 
     /**
@@ -125,15 +147,21 @@ trait SupportsBrowserStack
      */
     private static function getProjectName(): string
     {
+        static $result;
+
+        if ($result) {
+            return $result;
+        }
+
         if ($project = \env('BROWSERSTACK_PROJECT_NAME', \env('GITHUB_REPOSITORY'))) {
             if (\str_contains($project, '/')) {
                 $project = \explode('/', $project)[1];
             }
 
-            return $project;
+            return $result = $project;
         }
 
-        return \substr(\explode('/', \exec('git remote get-url origin'))[1], 0, -4);
+        return $result = \substr(\explode('/', \exec('git remote get-url origin'))[1], 0, -4);
     }
 
     /**
@@ -141,9 +169,15 @@ trait SupportsBrowserStack
      */
     private static function getLocalIdentifier(): string
     {
+        static $result;
+
+        if ($result) {
+            return $result;
+        }
+
         $localIdentifier = env('BROWSERSTACK_LOCAL_IDENTIFIER', self::getProjectName().'_'.self::getBuildName());
 
-        return (string) \str($localIdentifier)->replace('/', '_')->slug();
+        return $result = (string) \str($localIdentifier)->replace('/', '_')->slug();
     }
 
     private static function getDriverURL(): string
@@ -176,13 +210,12 @@ trait SupportsBrowserStack
      */
     public static function startBrowserStackLocal(array $arguments = []): void
     {
-        $arguments = \array_merge($arguments, [
-            'key' => env('BROWSERSTACK_ACCESS_KEY'),
-            'local-identifier' => self::getLocalIdentifier(),
-        ]);
-
-        static::$bslocalProcess = (new BrowserStackLocalProcess(static::$bslocalBinary))
-            ->toProcess($arguments);
+        static::$bslocalProcess = (new BrowserStackLocalProcess(static::$bslocalBinary))->toProcess(
+            \array_merge($arguments, [
+                'key' => env('BROWSERSTACK_ACCESS_KEY'),
+                'local-identifier' => self::getLocalIdentifier(),
+            ])
+        );
 
         static::$bslocalProcess->start();
 
