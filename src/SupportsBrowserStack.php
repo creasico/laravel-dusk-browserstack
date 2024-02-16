@@ -77,6 +77,32 @@ trait SupportsBrowserStack
         return str(static::class)->classBasename()->replace('Test', '')->headline();
     }
 
+    private static function getCommitSha(): string
+    {
+        if ($githubSha = \env('GITHUB_SHA')) {
+            return \substr($githubSha, 0, 7);
+        }
+
+        return \exec('echo "$(git rev-parse --short HEAD)"');
+    }
+
+    private static function getBranchName(): string
+    {
+        $githubRef = \env('GITHUB_REF');
+
+        if (! $githubRef) {
+            return \exec('echo "$(git branch --show-current)"');
+        }
+
+        $branchOrPullRequest = \explode('/', $githubRef)[2];
+
+        if (\env('GITHUB_EVENT_NAME') === 'pull_request') {
+            return \sprintf('PR #%s', $branchOrPullRequest);
+        }
+
+        return $branchOrPullRequest;
+    }
+
     /**
      * Get build name.
      */
@@ -88,7 +114,10 @@ trait SupportsBrowserStack
             return $build;
         }
 
-        return \exec('echo "$(git branch --show-current)-$(git rev-parse --short HEAD)"');
+        $sha = self::getCommitSha();
+        $branch = self::getBranchName();
+
+        return \sprintf('[%s] %s', $sha, $branch);
     }
 
     /**
@@ -96,7 +125,7 @@ trait SupportsBrowserStack
      */
     private static function getProjectName(): string
     {
-        if ($project = env('BROWSERSTACK_PROJECT_NAME')) {
+        if ($project = \env('BROWSERSTACK_PROJECT_NAME', \env('GITHUB_REPOSITORY'))) {
             if (\str_contains($project, '/')) {
                 $project = \explode('/', $project)[1];
             }
@@ -114,11 +143,7 @@ trait SupportsBrowserStack
     {
         $localIdentifier = env('BROWSERSTACK_LOCAL_IDENTIFIER', self::getProjectName().'_'.self::getBuildName());
 
-        if (! \str_contains($localIdentifier, '/')) {
-            return $localIdentifier;
-        }
-
-        return \str_replace('/', '_', $localIdentifier);
+        return (string) \str($localIdentifier)->replace('/', '_')->slug();
     }
 
     private static function getDriverURL(): string
