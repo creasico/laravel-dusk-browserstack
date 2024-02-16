@@ -8,7 +8,7 @@ use Symfony\Component\Process\Process;
 class BrowserStackLocalProcess
 {
     public function __construct(
-        public readonly string $binary
+        public ?string $binary
     ) {
         // .
     }
@@ -31,6 +31,17 @@ class BrowserStackLocalProcess
             throw new \RuntimeException("Unable to locate the BrowserStackLocal binary: {$this->binary}");
         }
 
-        return new Process(\array_merge([$binary], $arguments));
+        $args = [];
+        foreach (\array_filter($arguments) as $key => $value) {
+            if (\is_numeric($key)) {
+                $args[] = $value;
+
+                continue;
+            }
+
+            $args[] = \sprintf('--%s=%s', \trim($key, '- '), $value);
+        }
+
+        return new Process(\array_merge([$binary], $args));
     }
 }

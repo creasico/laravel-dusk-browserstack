@@ -29,8 +29,7 @@ trait SupportsBrowserStack
      */
     private static function hasBrowserStackKey(): bool
     {
-        return (isset($_SERVER['BROWSERSTACK_ACCESS_KEY']) || isset($_ENV['BROWSERSTACK_ACCESS_KEY']))
-            && env('BROWSERSTACK_LOCAL_IDENTIFIER') !== null;
+        return isset($_SERVER['BROWSERSTACK_ACCESS_KEY']) || isset($_ENV['BROWSERSTACK_ACCESS_KEY']);
     }
 
     /**
@@ -55,13 +54,13 @@ trait SupportsBrowserStack
         $caps->setCapability('bstack:options', [
             // 'os' => 'Windows',
             // 'osVersion' => '10',
-            'buildName' => $this->getBuildName(),
-            'projectName' => $this->getProjectName(),
-            'sessionName' => $this->getSessionName(),
+            'buildName' => self::getBuildName(),
+            'projectName' => self::getProjectName(),
+            'sessionName' => self::getSessionName(),
             'seleniumVersion' => '4.0.0',
         ]);
 
-        if ($localId = env('BROWSERSTACK_LOCAL_IDENTIFIER')) {
+        if (static::$bslocalProcess->isRunning() && $localId = self::getLocalIdentifier()) {
             $caps
                 ->setCapability('browserstack.local', true)
                 ->setCapability('browserstack.localIdentifier', $localId);
@@ -73,15 +72,15 @@ trait SupportsBrowserStack
     /**
      * Get session name
      */
-    private function getSessionName(): string
+    private static function getSessionName(): string
     {
-        return str(\get_class($this))->classBasename()->replace('Test', '')->headline();
+        return str(static::class)->classBasename()->replace('Test', '')->headline();
     }
 
     /**
-     * Get build name
+     * Get build name.
      */
-    private function getBuildName(): string
+    private static function getBuildName(): string
     {
         $build = env('BROWSERSTACK_BUILD_NAME');
 
@@ -93,9 +92,9 @@ trait SupportsBrowserStack
     }
 
     /**
-     * Get project name
+     * Get project name.
      */
-    private function getProjectName(): string
+    private static function getProjectName(): string
     {
         if ($project = env('BROWSERSTACK_PROJECT_NAME')) {
             return $project;
@@ -104,7 +103,19 @@ trait SupportsBrowserStack
         return \substr(\explode('/', \exec('git remote get-url origin'))[1], 0, -4);
     }
 
-    private function getDriverURL(): string
+    /**
+     * Get local identifier.
+     */
+    private static function getLocalIdentifier(): string
+    {
+        if ($localIdentifier = env('BROWSERSTACK_LOCAL_IDENTIFIER')) {
+            return $localIdentifier;
+        }
+
+        return self::getProjectName().'_'.\str_replace('/', '_', self::getBuildName());
+    }
+
+    private static function getDriverURL(): string
     {
         if (static::hasBrowserStackKey()) {
             return 'https://'.env('BROWSERSTACK_USERNAME').':'.env('BROWSERSTACK_ACCESS_KEY').'@hub.browserstack.com/wd/hub';
@@ -119,7 +130,7 @@ trait SupportsBrowserStack
             return;
         }
 
-        $browsers = static::$browsers ?? collect();
+        $browsers = collect(static::$browsers ?? []);
         $command = \compact('action', 'arguments');
 
         $browsers->each(
@@ -130,14 +141,28 @@ trait SupportsBrowserStack
     /**
      * Start the BrowserStackLocal process.
      *
-     *
      * @throws \RuntimeException
      */
     public static function startBrowserStackLocal(array $arguments = []): void
     {
-        static::$bslocalProcess = (new BrowserStackLocalProcess(static::$bslocalBinary))->toProcess($arguments);
+        $arguments = \array_merge($arguments, [
+            'key' => env('BROWSERSTACK_ACCESS_KEY'),
+            'local-identifier' => self::getLocalIdentifier(),
+        ]);
+
+        static::$bslocalProcess = (new BrowserStackLocalProcess(static::$bslocalBinary))
+            ->toProcess($arguments);
 
         static::$bslocalProcess->start();
+
+        static::$bslocalProcess->waitUntil(function ($_, $output): bool {
+            if (\str_contains($output, '[ERROR]')) {
+                static::$bslocalProcess->stop();
+                throw new \RuntimeException(\explode('[ERROR] ', $output)[1]);
+            }
+
+            return \str_contains($output, '[SUCCESS]');
+        });
 
         static::afterClass(function () {
             if (static::$bslocalProcess) {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "958b76fb31b857730a21b5297e0bea3d",
+    "content-hash": "3dcfad38f212cd3d7115f5b071e75418",
     "packages": [
         {
             "name": "brick/math",
@@ -1047,16 +1047,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v7.12.1",
+            "version": "v7.12.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "e7c2509034753dd4b2339b082884eef357673bf7"
+                "reference": "676df11326c29d11ee566cd046f8e49e0ce6eb0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/e7c2509034753dd4b2339b082884eef357673bf7",
-                "reference": "e7c2509034753dd4b2339b082884eef357673bf7",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/676df11326c29d11ee566cd046f8e49e0ce6eb0a",
+                "reference": "676df11326c29d11ee566cd046f8e49e0ce6eb0a",
                 "shasum": ""
             },
             "require": {
@@ -1117,22 +1117,22 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/dusk/issues",
-                "source": "https://github.com/laravel/dusk/tree/v7.12.1"
+                "source": "https://github.com/laravel/dusk/tree/v7.12.3"
             },
-            "time": "2024-01-03T22:54:48+00:00"
+            "time": "2024-02-15T13:38:58+00:00"
         },
         {
             "name": "laravel/framework",
-            "version": "v10.43.0",
+            "version": "v10.44.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "4f7802dfc9993cb57cf69615491ce1a7eb2e9529"
+                "reference": "1199dbe361787bbe9648131a79f53921b4148cf6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/4f7802dfc9993cb57cf69615491ce1a7eb2e9529",
-                "reference": "4f7802dfc9993cb57cf69615491ce1a7eb2e9529",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/1199dbe361787bbe9648131a79f53921b4148cf6",
+                "reference": "1199dbe361787bbe9648131a79f53921b4148cf6",
                 "shasum": ""
             },
             "require": {
@@ -1180,6 +1180,7 @@
             "conflict": {
                 "carbonphp/carbon-doctrine-types": ">=3.0",
                 "doctrine/dbal": ">=4.0",
+                "phpunit/phpunit": ">=11.0.0",
                 "tightenco/collect": "<5.5.33"
             },
             "provide": {
@@ -1324,7 +1325,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-01-30T16:25:02+00:00"
+            "time": "2024-02-13T16:01:16+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -5898,16 +5899,16 @@
         },
         {
             "name": "laravel/pint",
-            "version": "v1.13.10",
+            "version": "v1.13.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/pint.git",
-                "reference": "e2b5060885694ca30ac008c05dc9d47f10ed1abf"
+                "reference": "60a163c3e7e3346a1dec96d3e6f02e6465452552"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/pint/zipball/e2b5060885694ca30ac008c05dc9d47f10ed1abf",
-                "reference": "e2b5060885694ca30ac008c05dc9d47f10ed1abf",
+                "url": "https://api.github.com/repos/laravel/pint/zipball/60a163c3e7e3346a1dec96d3e6f02e6465452552",
+                "reference": "60a163c3e7e3346a1dec96d3e6f02e6465452552",
                 "shasum": ""
             },
             "require": {
@@ -5918,13 +5919,13 @@
                 "php": "^8.1.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.47.1",
-                "illuminate/view": "^10.41.0",
+                "friendsofphp/php-cs-fixer": "^3.49.0",
+                "illuminate/view": "^10.43.0",
                 "larastan/larastan": "^2.8.1",
                 "laravel-zero/framework": "^10.3.0",
                 "mockery/mockery": "^1.6.7",
                 "nunomaduro/termwind": "^1.15.1",
-                "pestphp/pest": "^2.31.0"
+                "pestphp/pest": "^2.33.6"
             },
             "bin": [
                 "builds/pint"
@@ -5960,7 +5961,7 @@
                 "issues": "https://github.com/laravel/pint/issues",
                 "source": "https://github.com/laravel/pint"
             },
-            "time": "2024-01-22T09:04:15+00:00"
+            "time": "2024-02-13T17:20:13+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -6326,16 +6327,16 @@
         },
         {
             "name": "orchestra/canvas",
-            "version": "v8.11.6",
+            "version": "v8.11.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/canvas.git",
-                "reference": "6ab236c7a190f7f53ce2e9c65fd9ee781e5aeb6c"
+                "reference": "e4a0157f522222725f1559bde0da1091a91542fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/canvas/zipball/6ab236c7a190f7f53ce2e9c65fd9ee781e5aeb6c",
-                "reference": "6ab236c7a190f7f53ce2e9c65fd9ee781e5aeb6c",
+                "url": "https://api.github.com/repos/orchestral/canvas/zipball/e4a0157f522222725f1559bde0da1091a91542fb",
+                "reference": "e4a0157f522222725f1559bde0da1091a91542fb",
                 "shasum": ""
             },
             "require": {
@@ -6395,9 +6396,9 @@
             "description": "Code Generators for Laravel Applications and Packages",
             "support": {
                 "issues": "https://github.com/orchestral/canvas/issues",
-                "source": "https://github.com/orchestral/canvas/tree/v8.11.6"
+                "source": "https://github.com/orchestral/canvas/tree/v8.11.7"
             },
-            "time": "2023-12-28T15:08:19+00:00"
+            "time": "2024-02-07T10:29:23+00:00"
         },
         {
             "name": "orchestra/canvas-core",
@@ -6470,6 +6471,74 @@
                 "source": "https://github.com/orchestral/canvas-core/tree/v8.10.2"
             },
             "time": "2023-12-28T01:27:59+00:00"
+        },
+        {
+            "name": "orchestra/dusk-updater",
+            "version": "v2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/orchestral/dusk-updater.git",
+                "reference": "238cfe8dde91b41b717903d33fcf6c341de64e7f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/orchestral/dusk-updater/zipball/238cfe8dde91b41b717903d33fcf6c341de64e7f",
+                "reference": "238cfe8dde91b41b717903d33fcf6c341de64e7f",
+                "shasum": ""
+            },
+            "require": {
+                "composer-runtime-api": "^2.2",
+                "composer/semver": "^1.5 || ^3.0",
+                "ext-openssl": "*",
+                "ext-zip": "*",
+                "guzzlehttp/guzzle": "^7.2",
+                "php": "^8.0",
+                "symfony/console": "^6.0 || ^7.0",
+                "symfony/polyfill-ctype": "^1.9",
+                "symfony/process": "^6.0 || ^7.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.4",
+                "phpstan/phpstan": "^1.10.7",
+                "phpunit/phpunit": "^9.6"
+            },
+            "bin": [
+                "dusk-updater"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Orchestra\\DuskUpdater\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jonas Staudenmeir",
+                    "email": "mail@jonas-staudenmeir.de"
+                },
+                {
+                    "name": "Mior Muhammad Zaki",
+                    "email": "crynobone@gmail.com"
+                }
+            ],
+            "description": "Updater for Laravel Dusk ChromeDriver binaries",
+            "support": {
+                "issues": "https://github.com/orchestral/dusk-updater/issues",
+                "source": "https://github.com/orchestral/dusk-updater/tree/v2.4.0"
+            },
+            "time": "2023-10-14T09:13:02+00:00"
         },
         {
             "name": "orchestra/testbench",
@@ -6617,6 +6686,77 @@
                 "source": "https://github.com/orchestral/testbench-core"
             },
             "time": "2024-01-22T01:45:47+00:00"
+        },
+        {
+            "name": "orchestra/testbench-dusk",
+            "version": "v8.22.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/orchestral/testbench-dusk.git",
+                "reference": "12da3a545a9d0ab7d993129994b5234461020fc5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/orchestral/testbench-dusk/zipball/12da3a545a9d0ab7d993129994b5234461020fc5",
+                "reference": "12da3a545a9d0ab7d993129994b5234461020fc5",
+                "shasum": ""
+            },
+            "require": {
+                "composer-runtime-api": "^2.2",
+                "laravel/dusk": "^7.12",
+                "laravel/serializable-closure": "^1.0",
+                "orchestra/dusk-updater": "^2.3",
+                "orchestra/testbench": ">=8.21.1 <8.22.0",
+                "php": "^8.1",
+                "php-webdriver/webdriver": "^1.9",
+                "symfony/polyfill-php83": "^1.28"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.6",
+                "phpstan/phpstan": "^1.10.7",
+                "phpunit/phpunit": "^10.1"
+            },
+            "bin": [
+                "testbench-dusk"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "8.0-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "Orchestra\\Testbench\\Dusk\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Keoghan Litchfield",
+                    "email": "keoghan@klever.co.uk",
+                    "homepage": "https://klever.co.uk",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Mior Muhammad Zaki",
+                    "email": "crynobone@gmail.com",
+                    "homepage": "https://github.com/crynobone",
+                    "role": "Organization Maintainer"
+                }
+            ],
+            "description": "Laravel Dusk Testing Helper for Packages Development",
+            "support": {
+                "issues": "https://github.com/orchestral/testbench-dusk/issues",
+                "source": "https://github.com/orchestral/testbench-dusk/tree/v8.22.0"
+            },
+            "time": "2024-01-26T11:23:15+00:00"
         },
         {
             "name": "orchestra/workbench",
@@ -6801,16 +6941,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.57",
+            "version": "1.10.58",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "1627b1d03446904aaa77593f370c5201d2ecc34e"
+                "reference": "a23518379ec4defd9e47cbf81019526861623ec2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/1627b1d03446904aaa77593f370c5201d2ecc34e",
-                "reference": "1627b1d03446904aaa77593f370c5201d2ecc34e",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/a23518379ec4defd9e47cbf81019526861623ec2",
+                "reference": "a23518379ec4defd9e47cbf81019526861623ec2",
                 "shasum": ""
             },
             "require": {
@@ -6859,7 +6999,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-24T11:51:34+00:00"
+            "time": "2024-02-12T20:02:57+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -7417,16 +7557,16 @@
         },
         {
             "name": "rector/rector",
-            "version": "0.19.8",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "de3b3bb159abd704b144aa86fb244f7f1f4ac947"
+                "reference": "362258a1f6369fc88d02d469a5478d220f78b0e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/de3b3bb159abd704b144aa86fb244f7f1f4ac947",
-                "reference": "de3b3bb159abd704b144aa86fb244f7f1f4ac947",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/362258a1f6369fc88d02d469a5478d220f78b0e6",
+                "reference": "362258a1f6369fc88d02d469a5478d220f78b0e6",
                 "shasum": ""
             },
             "require": {
@@ -7461,7 +7601,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/0.19.8"
+                "source": "https://github.com/rectorphp/rector/tree/1.0.0"
             },
             "funding": [
                 {
@@ -7469,7 +7609,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-02-05T10:59:13+00:00"
+            "time": "2024-02-06T13:38:07+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -8450,16 +8590,16 @@
         },
         {
             "name": "spatie/laravel-ray",
-            "version": "1.35.0",
+            "version": "1.35.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ray.git",
-                "reference": "29298a4bc2038ba108abc283e96fb74991644774"
+                "reference": "f504d3787d88c7e5de7a4290658f7ad9b1352f22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ray/zipball/29298a4bc2038ba108abc283e96fb74991644774",
-                "reference": "29298a4bc2038ba108abc283e96fb74991644774",
+                "url": "https://api.github.com/repos/spatie/laravel-ray/zipball/f504d3787d88c7e5de7a4290658f7ad9b1352f22",
+                "reference": "f504d3787d88c7e5de7a4290658f7ad9b1352f22",
                 "shasum": ""
             },
             "require": {
@@ -8469,7 +8609,7 @@
                 "illuminate/queue": "^7.20|^8.19|^9.0|^10.0|^11.0",
                 "illuminate/support": "^7.20|^8.19|^9.0|^10.0|^11.0",
                 "php": "^7.4|^8.0",
-                "rector/rector": "^0.19.2",
+                "rector/rector": "^0.19.2|^1.0",
                 "spatie/backtrace": "^1.0",
                 "spatie/ray": "^1.41.1",
                 "symfony/stopwatch": "4.2|^5.1|^6.0|^7.0",
@@ -8521,7 +8661,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-ray/issues",
-                "source": "https://github.com/spatie/laravel-ray/tree/1.35.0"
+                "source": "https://github.com/spatie/laravel-ray/tree/1.35.1"
             },
             "funding": [
                 {
@@ -8533,7 +8673,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2024-02-03T10:04:50+00:00"
+            "time": "2024-02-13T14:19:41+00:00"
         },
         {
             "name": "spatie/macroable",
@@ -9143,7 +9283,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.1"
+        "php": "^8.1",
+        "ext-zip": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"
