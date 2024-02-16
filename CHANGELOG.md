@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/creasico/laravel-package/compare/v0.2.3...v0.3.0) (2024-02-16)
+
+
+### Features
+
+* **48:** adds ability to download browserstack-local binary ([08416ba](https://github.com/creasico/laravel-package/commit/08416baf1c9cea14884338bfbc9141a07919dbca))
+* **48:** adds ability to start browserstack-local binary ([99e1f38](https://github.com/creasico/laravel-package/commit/99e1f38bdf02845cfd2d948256a247250f54ac78))
+
+
+### Bug Fixes
+
+* **ci:** fix issue when `BROWSERSTACK_PROJECT_NAME` got value from `github.repository` ([e573974](https://github.com/creasico/laravel-package/commit/e57397473b915cfa71ab66cab5e134c0a43caa6f))
+
 ### [0.2.3](https://github.com/creasico/laravel-package/compare/v0.2.2...v0.2.3) (2024-02-06)
 
 ### [0.2.2](https://github.com/creasico/laravel-package/compare/v0.2.1...v0.2.2) (2023-10-31)
