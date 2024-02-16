@@ -37,14 +37,18 @@ $ composer require creasi/dusk-browserstack --dev
    ```diff
      public static function prepare()
      {
-   -     if (! static::runningInSail()) {
-   +     if (! static::runningInSail() && ! static::hasBrowserStackKey()) {
+   +     if (static::hasBrowserStackKey()) {
+   +         static::startBrowserStackLocal();
+   +         return;
+   +     }
+   
+         if (! static::runningInSail()) {
              static::startChromeDriver();
          }
      }
    ```
 
-3. Update `driver` method
+1. Update `driver` method
 
      ```diff
      protected function driver()

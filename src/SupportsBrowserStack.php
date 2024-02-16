@@ -2,6 +2,7 @@
 
 namespace Creasi\DuskBrowserStack;
 
+use Creasi\DuskBrowserStack\Process\BrowserStackLocalProcess;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Laravel\Dusk\Browser;
 
@@ -13,6 +14,16 @@ use Laravel\Dusk\Browser;
  */
 trait SupportsBrowserStack
 {
+    /**
+     * @var string|null The path to the custom BrowserStackLocal binary.
+     */
+    protected static $bslocalBinary;
+
+    /**
+     * @var \Symfony\Component\Process\Process The BrowserStackLocal process instance.
+     */
+    protected static $bslocalProcess;
+
     /**
      * Determine if the BrowserStack Key and User is set.
      */
@@ -114,5 +125,32 @@ trait SupportsBrowserStack
         $browsers->each(
             fn (Browser $browser) => $browser->driver->executeScript('browserstack_executor: '.\json_encode($command))
         );
+    }
+
+    /**
+     * Start the BrowserStackLocal process.
+     *
+     *
+     * @throws \RuntimeException
+     */
+    public static function startBrowserStackLocal(array $arguments = []): void
+    {
+        static::$bslocalProcess = (new BrowserStackLocalProcess(static::$bslocalBinary))->toProcess($arguments);
+
+        static::$bslocalProcess->start();
+
+        static::afterClass(function () {
+            if (static::$bslocalProcess) {
+                static::$bslocalProcess->stop();
+            }
+        });
+    }
+
+    /**
+     * Set the path to the custom BrowserStackLocal.
+     */
+    public static function useBrowserStackLocal(string $path): void
+    {
+        static::$bslocalBinary = $path;
     }
 }

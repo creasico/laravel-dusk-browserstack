@@ -21,7 +21,7 @@ class BrowserStackLocalCommand extends Command
 
     public function handle(): void
     {
-        $os = $this->getPlatform();
+        $os = static::getPlatform();
 
         $archive = $this->download($os);
 
@@ -89,7 +89,7 @@ class BrowserStackLocalCommand extends Command
         chmod($directory.$newName, 0755);
     }
 
-    protected function getPlatform(): string
+    public static function getPlatform(): string
     {
         $os = \strtoupper(PHP_OS);
 
