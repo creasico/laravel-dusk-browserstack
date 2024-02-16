@@ -97,6 +97,10 @@ trait SupportsBrowserStack
     private static function getProjectName(): string
     {
         if ($project = env('BROWSERSTACK_PROJECT_NAME')) {
+            if (\str_contains($project, '/')) {
+                $project = \explode('/', $project)[1];
+            }
+
             return $project;
         }
 
@@ -108,11 +112,13 @@ trait SupportsBrowserStack
      */
     private static function getLocalIdentifier(): string
     {
-        if ($localIdentifier = env('BROWSERSTACK_LOCAL_IDENTIFIER')) {
+        $localIdentifier = env('BROWSERSTACK_LOCAL_IDENTIFIER', self::getProjectName().'_'.self::getBuildName());
+
+        if (! \str_contains($localIdentifier, '/')) {
             return $localIdentifier;
         }
 
-        return self::getProjectName().'_'.\str_replace('/', '_', self::getBuildName());
+        return \str_replace('/', '_', $localIdentifier);
     }
 
     private static function getDriverURL(): string
