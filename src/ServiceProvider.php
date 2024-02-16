@@ -9,7 +9,11 @@ class ServiceProvider extends IlluminateServiceProvider
 {
     public function boot(): void
     {
-        // .
+        if (app()->runningInConsole()) {
+            $this->commands([
+                Commands\BrowserStackLocalCommand::class,
+            ]);
+        }
     }
 
     public function register(): void
@@ -30,7 +34,7 @@ class ServiceProvider extends IlluminateServiceProvider
             return;
         }
 
-        Browser::macro('waitForInertia', function (int $seconds = null): Browser {
+        Browser::macro('waitForInertia', function (?int $seconds = null): Browser {
             /** @var Browser $this */
             $driver = $this->driver;
 

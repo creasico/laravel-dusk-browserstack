@@ -1,0 +1,6 @@
+providers:
+  - Creasi\DuskBrowserStack\ServiceProvider
+
+workbench:
+  welcome: true
+  install: true

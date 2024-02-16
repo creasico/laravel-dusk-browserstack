@@ -2,6 +2,7 @@
 
 namespace Creasi\DuskBrowserStack;
 
+use Creasi\DuskBrowserStack\Process\BrowserStackLocalProcess;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Laravel\Dusk\Browser;
 
@@ -14,12 +15,21 @@ use Laravel\Dusk\Browser;
 trait SupportsBrowserStack
 {
     /**
+     * @var string|null The path to the custom BrowserStackLocal binary.
+     */
+    protected static $bslocalBinary;
+
+    /**
+     * @var \Symfony\Component\Process\Process The BrowserStackLocal process instance.
+     */
+    protected static $bslocalProcess;
+
+    /**
      * Determine if the BrowserStack Key and User is set.
      */
     private static function hasBrowserStackKey(): bool
     {
-        return (isset($_SERVER['BROWSERSTACK_ACCESS_KEY']) || isset($_ENV['BROWSERSTACK_ACCESS_KEY']))
-            && env('BROWSERSTACK_LOCAL_IDENTIFIER') !== null;
+        return isset($_SERVER['BROWSERSTACK_ACCESS_KEY']) || isset($_ENV['BROWSERSTACK_ACCESS_KEY']);
     }
 
     /**
@@ -44,13 +54,13 @@ trait SupportsBrowserStack
         $caps->setCapability('bstack:options', [
             // 'os' => 'Windows',
             // 'osVersion' => '10',
-            'buildName' => $this->getBuildName(),
-            'projectName' => $this->getProjectName(),
-            'sessionName' => $this->getSessionName(),
+            'buildName' => self::getBuildName(),
+            'projectName' => self::getProjectName(),
+            'sessionName' => self::getSessionName(),
             'seleniumVersion' => '4.0.0',
         ]);
 
-        if ($localId = env('BROWSERSTACK_LOCAL_IDENTIFIER')) {
+        if (static::$bslocalProcess->isRunning() && $localId = self::getLocalIdentifier()) {
             $caps
                 ->setCapability('browserstack.local', true)
                 ->setCapability('browserstack.localIdentifier', $localId);
@@ -62,38 +72,115 @@ trait SupportsBrowserStack
     /**
      * Get session name
      */
-    private function getSessionName(): string
+    private static function getSessionName(): string
     {
-        return str(\get_class($this))->classBasename()->replace('Test', '')->headline();
+        return str(static::class)->classBasename()->replace('Test', '')->headline();
     }
 
     /**
-     * Get build name
+     * Get commit sha in short format.
+     *
+     * @link https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
      */
-    private function getBuildName(): string
+    private static function getCommitSha(): string
     {
+        if ($githubSha = \env('GITHUB_SHA')) {
+            return \substr($githubSha, 0, 7);
+        }
+
+        return \exec('echo "$(git rev-parse --short HEAD)"');
+    }
+
+    /**
+     * Get branch name, but if it's a pull request, use the PR number.
+     *
+     * @link https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
+     */
+    private static function getBranchName(): string
+    {
+        static $result;
+
+        if ($result) {
+            return $result;
+        }
+
+        $githubRef = \env('GITHUB_REF');
+
+        if (! $githubRef) {
+            return $result = \exec('echo "$(git branch --show-current)"');
+        }
+
+        $branchOrPullRequest = \explode('/', $githubRef)[2];
+
+        if (\env('GITHUB_EVENT_NAME') === 'pull_request') {
+            return $result = \sprintf('PR #%s', $branchOrPullRequest);
+        }
+
+        return $result = $branchOrPullRequest;
+    }
+
+    /**
+     * Get build name.
+     */
+    private static function getBuildName(): string
+    {
+        static $result;
+
+        if ($result) {
+            return $result;
+        }
+
         $build = env('BROWSERSTACK_BUILD_NAME');
 
         if ($build && (\strlen($build) > 0 && \strlen($build) <= 255)) {
-            return $build;
+            return $result = $build;
         }
 
-        return \exec('echo "$(git branch --show-current)-$(git rev-parse --short HEAD)"');
+        $sha = self::getCommitSha();
+        $branch = self::getBranchName();
+
+        return $result = \sprintf('[%s] %s', $sha, $branch);
     }
 
     /**
-     * Get project name
+     * Get project name.
      */
-    private function getProjectName(): string
+    private static function getProjectName(): string
     {
-        if ($project = env('BROWSERSTACK_PROJECT_NAME')) {
-            return $project;
+        static $result;
+
+        if ($result) {
+            return $result;
         }
 
-        return \substr(\explode('/', \exec('git remote get-url origin'))[1], 0, -4);
+        if ($project = \env('BROWSERSTACK_PROJECT_NAME', \env('GITHUB_REPOSITORY'))) {
+            if (\str_contains($project, '/')) {
+                $project = \explode('/', $project)[1];
+            }
+
+            return $result = $project;
+        }
+
+        return $result = \substr(\explode('/', \exec('git remote get-url origin'))[1], 0, -4);
     }
 
-    private function getDriverURL(): string
+    /**
+     * Get local identifier.
+     */
+    private static function getLocalIdentifier(): string
+    {
+        static $result;
+
+        if ($result) {
+            return $result;
+        }
+
+        $localIdentifier = env('BROWSERSTACK_LOCAL_IDENTIFIER', self::getProjectName().'_'.self::getBuildName());
+
+        return $result = (string) \str($localIdentifier)->replace('/', '_')->slug();
+    }
+
+    private static function getDriverURL(): string
     {
         if (static::hasBrowserStackKey()) {
             return 'https://'.env('BROWSERSTACK_USERNAME').':'.env('BROWSERSTACK_ACCESS_KEY').'@hub.browserstack.com/wd/hub';
@@ -108,11 +195,51 @@ trait SupportsBrowserStack
             return;
         }
 
-        $browsers = static::$browsers ?? collect();
+        $browsers = collect(static::$browsers ?? []);
         $command = \compact('action', 'arguments');
 
         $browsers->each(
             fn (Browser $browser) => $browser->driver->executeScript('browserstack_executor: '.\json_encode($command))
         );
+    }
+
+    /**
+     * Start the BrowserStackLocal process.
+     *
+     * @throws \RuntimeException
+     */
+    public static function startBrowserStackLocal(array $arguments = []): void
+    {
+        static::$bslocalProcess = (new BrowserStackLocalProcess(static::$bslocalBinary))->toProcess(
+            \array_merge($arguments, [
+                'key' => env('BROWSERSTACK_ACCESS_KEY'),
+                'local-identifier' => self::getLocalIdentifier(),
+            ])
+        );
+
+        static::$bslocalProcess->start();
+
+        static::$bslocalProcess->waitUntil(function ($_, $output): bool {
+            if (\str_contains($output, '[ERROR]')) {
+                static::$bslocalProcess->stop();
+                throw new \RuntimeException(\explode('[ERROR] ', $output)[1]);
+            }
+
+            return \str_contains($output, '[SUCCESS]');
+        });
+
+        static::afterClass(function () {
+            if (static::$bslocalProcess) {
+                static::$bslocalProcess->stop();
+            }
+        });
+    }
+
+    /**
+     * Set the path to the custom BrowserStackLocal.
+     */
+    public static function useBrowserStackLocal(string $path): void
+    {
+        static::$bslocalBinary = $path;
     }
 }

@@ -61,7 +61,12 @@ jobs:
         run: composer update --prefer-dist --no-interaction --no-progress
 
       - name: Run tests
-        run: composer test -- --coverage
+        env:
+          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        run: |
+          composer testbench dusk:browserstack-local
+          composer test -- --coverage
 
       - name: Generate reports for CodeClimate
         if: ${{ github.actor != 'dependabot[bot]' || needs.configs.outputs.should-reports == '1' }}
