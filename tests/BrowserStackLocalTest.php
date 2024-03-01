@@ -8,6 +8,7 @@ use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Laravel\Dusk\Browser;
+use Orchestra\Testbench\Attributes\RequiresEnv;
 use Orchestra\Testbench\Dusk\Options as DuskOptions;
 use Orchestra\Testbench\Dusk\TestCase;
 use PHPUnit\Framework\Attributes\Group;
@@ -64,6 +65,7 @@ class BrowserStackLocalTest extends TestCase
 
     #[Test]
     #[Group('browserStack')]
+    #[RequiresEnv('BROWSERSTACK_ACCESS_KEY')]
     public function should_be_true()
     {
         $this->browse(function (Browser $browser) {
