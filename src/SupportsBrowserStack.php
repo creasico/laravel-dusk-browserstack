@@ -5,6 +5,7 @@ namespace Creasi\DuskBrowserStack;
 use Creasi\DuskBrowserStack\Process\BrowserStackLocalProcess;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Laravel\Dusk\Browser;
+use PHPUnit\Runner\Version;
 
 /**
  * @mixin \Laravel\Dusk\TestCase
@@ -37,12 +38,7 @@ trait SupportsBrowserStack
      */
     protected function tearDownSupportsBrowserStack(): void
     {
-        $status = $this->status();
-
-        $this->executeBrowserStackCommand('setSessionStatus', [
-            'status' => $status->isSuccess() ? 'passed' : 'failed',
-            'reason' => $status->message(),
-        ]);
+        $this->executeBrowserStackCommand('setSessionStatus', $this->getSessionStatus());
     }
 
     private function withBrowserStackCapabilities(DesiredCapabilities $caps): DesiredCapabilities
@@ -75,6 +71,26 @@ trait SupportsBrowserStack
     private static function getSessionName(): string
     {
         return str(static::class)->classBasename()->replace('Test', '')->headline();
+    }
+
+    /**
+     * Backward compatibility for PHPUnit 9.
+     */
+    private function getSessionStatus(): array
+    {
+        if (\version_compare(Version::id(), '10.0.0', '<')) {
+            return [
+                'status' => $this->hasFailed() ? 'failed' : 'passed',
+                'reason' => $this->getStatusMessage(),
+            ];
+        }
+
+        $status = $this->status();
+
+        return [
+            'status' => $status->isSuccess() ? 'passed' : 'failed',
+            'reason' => $status->message(),
+        ];
     }
 
     /**
