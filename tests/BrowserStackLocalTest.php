@@ -2,7 +2,6 @@
 
 namespace Creasi\Tests;
 
-use Creasi\DuskBrowserStack\ServiceProvider;
 use Creasi\DuskBrowserStack\SupportsBrowserStack;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
@@ -16,25 +15,8 @@ use PHPUnit\Framework\Attributes\Test;
 
 class BrowserStackLocalTest extends TestCase
 {
+    use CreateApplication;
     use SupportsBrowserStack;
-
-    /**
-     * @param  \Illuminate\Foundation\Application  $app
-     */
-    protected function getPackageProviders($app): array
-    {
-        return [
-            ServiceProvider::class,
-        ];
-    }
-
-    /**
-     * @param  \Illuminate\Foundation\Application  $app
-     */
-    protected function getEnvironmentSetUp($app): void
-    {
-        $app->useEnvironmentPath(\dirname(__DIR__));
-    }
 
     public static function defineWebDriverOptions()
     {

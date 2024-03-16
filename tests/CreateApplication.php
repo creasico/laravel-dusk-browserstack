@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Creasi\Tests;
 
 use Creasi\DuskBrowserStack\ServiceProvider;
-use Orchestra\Testbench\TestCase as Orchestra;
 
-abstract class TestCase extends Orchestra
+trait CreateApplication
 {
     /**
      * @param  \Illuminate\Foundation\Application  $app
@@ -15,13 +16,5 @@ abstract class TestCase extends Orchestra
         return [
             ServiceProvider::class,
         ];
-    }
-
-    /**
-     * @param  \Illuminate\Foundation\Application  $app
-     */
-    protected function getEnvironmentSetUp($app): void
-    {
-        $app->useEnvironmentPath(\dirname(__DIR__));
     }
 }
