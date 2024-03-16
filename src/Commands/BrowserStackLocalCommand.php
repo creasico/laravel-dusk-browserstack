@@ -2,6 +2,7 @@
 
 namespace Creasi\DuskBrowserStack\Commands;
 
+use Creasi\DuskBrowserStack\LocalBinary;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Utils;
 use Illuminate\Console\Command;
@@ -9,36 +10,33 @@ use Illuminate\Support\Str;
 
 class BrowserStackLocalCommand extends Command
 {
-    /** @var string */
+    /**
+     * {@inheritdoc}
+     */
     protected $signature = 'dusk:browserstack-local
                     {--ssl-no-verify : Bypass SSL certificate verification when installing through a proxy}';
 
-    /** @var string */
+    /**
+     * {@inheritdoc}
+     */
     protected $description = 'Install the Browserstack-Local binary';
-
-    /** @var string Path to the bin directory. */
-    protected $directory = __DIR__.'/../../bin';
 
     public function handle(): void
     {
-        $os = static::getPlatform();
-
-        $archive = $this->download($os);
+        $archive = $this->download();
 
         $binary = $this->extract($archive);
 
-        $this->rename($binary, $os);
+        $this->rename($binary);
     }
 
-    protected function download(string $os): string
+    protected function download(): string
     {
         $client = new Client();
-        $url = "https://www.browserstack.com/browserstack-local/BrowserStackLocal-{$os}.zip";
-
-        $resource = Utils::tryFopen($archive = \realpath($this->directory).'/browserstack-local.zip', 'w');
+        $resource = Utils::tryFopen($archive = LocalBinary::getDirectory().'/browserstack-local.zip', 'w');
 
         try {
-            $response = $client->get($url, \array_merge([
+            $response = $client->get($url = LocalBinary::getDownloadUrl(), \array_merge([
                 'sink' => $resource,
                 'verify' => $this->option('ssl-no-verify') === false,
             ]));
@@ -64,7 +62,7 @@ class BrowserStackLocalCommand extends Command
             throw new \Exception("Unable to open [{$archive}]. code: {$res}");
         }
 
-        $zip->extractTo($this->directory);
+        $zip->extractTo(LocalBinary::getDirectory());
 
         $binary = $zip->getNameIndex(0);
 
@@ -75,10 +73,11 @@ class BrowserStackLocalCommand extends Command
         return $binary;
     }
 
-    protected function rename($binary, $os): void
+    protected function rename($binary): void
     {
+        $os = LocalBinary::getPlatform();
         $binary = str_replace(DIRECTORY_SEPARATOR, '/', $binary);
-        $directory = \realpath($this->directory).'/';
+        $directory = LocalBinary::getDirectory().'/';
 
         $newName = \str_contains($binary, '/')
             ? Str::after(str_replace('BrowserStackLocal', 'bs-local-'.$os, $binary), '/')
@@ -87,20 +86,5 @@ class BrowserStackLocalCommand extends Command
         rename($directory.$binary, $directory.$newName);
 
         chmod($directory.$newName, 0755);
-    }
-
-    public static function getPlatform(): string
-    {
-        $os = \strtoupper(PHP_OS);
-
-        if ($os === 'WINNT' || \str_contains(php_uname(), 'Microsoft')) {
-            return 'win32';
-        }
-
-        if ($os === 'DARWIN') {
-            return 'darwin-x64';
-        }
-
-        return 'linux-x64';
     }
 }

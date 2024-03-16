@@ -2,7 +2,6 @@
 
 namespace Creasi\DuskBrowserStack;
 
-use Creasi\DuskBrowserStack\Process\BrowserStackLocalProcess;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Laravel\Dusk\Browser;
 use PHPUnit\Runner\Version;
@@ -21,7 +20,7 @@ trait SupportsBrowserStack
     protected static $bslocalBinary;
 
     /**
-     * @var \Symfony\Component\Process\Process The BrowserStackLocal process instance.
+     * @var LocalProcess The BrowserStackLocal process instance.
      */
     protected static $bslocalProcess;
 
@@ -226,23 +225,14 @@ trait SupportsBrowserStack
      */
     public static function startBrowserStackLocal(array $arguments = []): void
     {
-        static::$bslocalProcess = (new BrowserStackLocalProcess(static::$bslocalBinary))->toProcess(
-            \array_merge($arguments, [
-                'key' => env('BROWSERSTACK_ACCESS_KEY'),
-                'local-identifier' => self::getLocalIdentifier(),
-            ])
-        );
+        static::$bslocalProcess = new LocalProcess(static::$bslocalBinary, \array_merge($arguments, [
+            'key' => env('BROWSERSTACK_ACCESS_KEY'),
+            'local-identifier' => self::getLocalIdentifier(),
+            'force-local',
+            'force',
+        ]));
 
         static::$bslocalProcess->start();
-
-        static::$bslocalProcess->waitUntil(function ($_, $output): bool {
-            if (\str_contains($output, '[ERROR]')) {
-                static::$bslocalProcess->stop();
-                throw new \RuntimeException(\explode('[ERROR] ', $output)[1]);
-            }
-
-            return \str_contains($output, '[SUCCESS]');
-        });
 
         static::afterClass(function () {
             if (static::$bslocalProcess) {
