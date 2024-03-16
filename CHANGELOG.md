@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/creasico/laravel-package/compare/v0.3.0...v0.3.1) (2024-03-16)
+
+
+### Features
+
+* add backward compatibility with phpunit 9 ([d32a44d](https://github.com/creasico/laravel-package/commit/d32a44dc72ecb6569cc375bd810593f3705dda8e))
+* init support laravel 11 ([a218124](https://github.com/creasico/laravel-package/commit/a218124cf39ac4e1e03d9df4752288c089646fbf))
+
+
+### Bug Fixes
+
+* skip test when required env missing ([4876e93](https://github.com/creasico/laravel-package/commit/4876e9387c30f947d1833424c07553b9405d75d9))
+
 ## [0.3.0](https://github.com/creasico/laravel-package/compare/v0.2.3...v0.3.0) (2024-02-16)
 
 
