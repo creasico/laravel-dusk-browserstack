@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.2](https://github.com/creasico/laravel-package/compare/v0.3.1...v0.3.2) (2024-03-17)
+
+
+### Features
+
+* add dedicated class to handle local binary ([66a7c9b](https://github.com/creasico/laravel-package/commit/66a7c9bf76468b93daac8b36e444cca5ed72f839))
+
+
+### Bug Fixes
+
+* fix issue that caused by prematurelly closed bs-local process ([ea43d4a](https://github.com/creasico/laravel-package/commit/ea43d4af3e4155e3a238ed44a09d3e0fb05a872e))
+* fix issue that causing orphan process when got an error on bs-local process ([80c507b](https://github.com/creasico/laravel-package/commit/80c507bf45d19356e08191579ad6e6c33c84d863))
+
 ### [0.3.1](https://github.com/creasico/laravel-package/compare/v0.3.0...v0.3.1) (2024-03-16)
 
 
