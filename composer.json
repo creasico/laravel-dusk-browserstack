@@ -23,13 +23,25 @@
     },
     "scripts": {
         "fix": [
-            "pint --preset laravel"
+            "pint"
         ],
         "test": [
-            "testbench package:test --coverage --ansi"
+            "@testbench package:test --ansi"
         ],
         "testbench": [
-            "testbench"
+            "@php vendor/bin/testbench"
+        ],
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve"
         ]
     },
     "autoload": {
