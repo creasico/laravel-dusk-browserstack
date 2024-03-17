@@ -46,18 +46,16 @@ trait SupportsBrowserStack
             return $caps;
         }
 
-        $caps->setCapability('bstack:options', [
-            // 'os' => 'Windows',
-            // 'osVersion' => '10',
-            'buildName' => self::getBuildName(),
-            'projectName' => self::getProjectName(),
-            'sessionName' => self::getSessionName(),
-            'seleniumVersion' => '4.0.0',
-        ]);
+        $caps
+            ->setCapability('buildName', self::getBuildName())
+            ->setCapability('projectName', self::getProjectName())
+            ->setCapability('sessionName', self::getSessionName())
+            ->setCapability('acceptInsecureCerts', true);
 
         if (static::$bslocalProcess->isRunning() && $localId = self::getLocalIdentifier()) {
             $caps
                 ->setCapability('browserstack.local', true)
+                ->setCapability('browserstack.networkLogs', true)
                 ->setCapability('browserstack.localIdentifier', $localId);
         }
 
@@ -228,8 +226,6 @@ trait SupportsBrowserStack
         static::$bslocalProcess = new LocalProcess(static::$bslocalBinary, \array_merge($arguments, [
             'key' => env('BROWSERSTACK_ACCESS_KEY'),
             'local-identifier' => self::getLocalIdentifier(),
-            'force-local',
-            'force',
         ]));
 
         static::$bslocalProcess->start();
