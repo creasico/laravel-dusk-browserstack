@@ -56,8 +56,10 @@ class LocalProcess
 
                 return \str_contains($message, '[SUCCESS]');
             });
-        } finally {
-            $this->stop();
+        } catch (\Throwable $e) {
+            $this->process->stop();
+
+            throw $e;
         }
 
         // We register the below, so if php is exited early, the child
