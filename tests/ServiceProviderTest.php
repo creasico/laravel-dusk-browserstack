@@ -9,6 +9,7 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverWait;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Dusk\Browser;
+use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\TestCase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -16,8 +17,8 @@ use PHPUnit\Framework\Attributes\Test;
 #[Group('serviceProvider')]
 class ServiceProviderTest extends TestCase
 {
-    use CreateApplication;
     use WithFaker;
+    use WithWorkbench;
 
     private function mockWebDriver()
     {

@@ -8,6 +8,7 @@ use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Laravel\Dusk\Browser;
 use Orchestra\Testbench\Attributes\RequiresEnv;
+use Orchestra\Testbench\Concerns\WithWorkbench;
 use Orchestra\Testbench\Dusk\Options as DuskOptions;
 use Orchestra\Testbench\Dusk\TestCase;
 use PHPUnit\Framework\Attributes\Group;
@@ -15,8 +16,8 @@ use PHPUnit\Framework\Attributes\Test;
 
 class BrowserStackLocalTest extends TestCase
 {
-    use CreateApplication;
     use SupportsBrowserStack;
+    use WithWorkbench;
 
     public static function defineWebDriverOptions()
     {
