@@ -117,7 +117,7 @@ final class BrowserStack
         }
 
         $run = self::getRunsNumber() ?: null;
-        $sha = \trim(\exec('git rev-parse --short HEAD').'-'.$run, '- ');
+        $sha = \trim(self::getCommitSha().'-'.$run, '- ');
 
         return self::$localIdentifier = self::getProjectName().'_'.$sha;
     }
@@ -139,7 +139,11 @@ final class BrowserStack
 
         $numbers = '';
         $branch = env('GITHUB_HEAD_REF', \exec('git branch --show-current'));
-        $message = self::getRunsMessage();
+        $message = self::getRunsMessage().' '.self::getCommitSha();
+
+        if ($buildMatrix = env('BUILD_MATRIX')) {
+            $numbers .= \sprintf(', Matrix: %s', $buildMatrix);
+        }
 
         if ($runNumber = self::getRunsNumber()) {
             $numbers .= \sprintf(', Run: %d', $runNumber);
@@ -245,6 +249,18 @@ final class BrowserStack
             return 'uncommited changes';
         }
 
-        return \exec('echo "`git log -1 --pretty=%s` (`git rev-parse --short HEAD`)"');
+        return \exec('git log -1 --pretty=%s');
+    }
+
+    /**
+     * Get commit sha in short format.
+     */
+    private static function getCommitSha(): string
+    {
+        if ($githubSha = \env('GITHUB_SHA')) {
+            return \substr($githubSha, 0, 7);
+        }
+
+        return \exec('git rev-parse --short HEAD');
     }
 }
