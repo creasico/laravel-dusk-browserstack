@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.3](https://github.com/creasico/laravel-package/compare/v0.3.2...v0.3.3) (2024-03-19)
+
+
+### Features
+
+* add `WithBrowserStack` as replacement of `SupportsBrowserStack` ([faa84ec](https://github.com/creasico/laravel-package/commit/faa84eca44eebf8dbfe0e482d4de6e4f717fa862))
+* add dedicated class to interacts with BrowserStack ([46a88ef](https://github.com/creasico/laravel-package/commit/46a88ef78bcf3978cd3ee82dc491a3754be055a7))
+
 ### [0.3.2](https://github.com/creasico/laravel-package/compare/v0.3.1...v0.3.2) (2024-03-17)
 
 
