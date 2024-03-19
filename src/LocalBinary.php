@@ -5,9 +5,22 @@ namespace Creasi\DuskBrowserStack;
 class LocalBinary
 {
     /**
-     * @var string Path to the bin directory.
+     * Path to the bin directory.
      */
     private static string $directory = __DIR__.'/../bin';
+
+    /**
+     * Path to the BrowserStackLocal binary.
+     */
+    private static ?string $path = null;
+
+    /**
+     * Set the path to the custom BrowserStackLocal binary.
+     */
+    public static function use(string $path): void
+    {
+        static::$path = $path;
+    }
 
     /**
      * Retrieve the download URL for the BrowserStackLocal binary.
@@ -24,13 +37,17 @@ class LocalBinary
      */
     public static function getPath(): string
     {
+        if (self::$path) {
+            return self::$path;
+        }
+
         $os = static::getPlatform();
 
         if ($os === 'win32') {
             $os .= '.exe';
         }
 
-        return self::$directory.'/bs-local-'.$os;
+        return self::getDirectory().'/bs-local-'.$os;
     }
 
     /**
