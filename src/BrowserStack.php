@@ -138,20 +138,14 @@ final class BrowserStack
         }
 
         $numbers = '';
-        $branch = \exec('git branch --show-current');
-        $commit = self::isDirty()
-            ? 'uncommitted changes'
-            : \exec('echo "`git log -1 --pretty=%s` (`git rev-parse --short HEAD`)"');
-
-        if ($prNumber = self::getPullRequestNumber()) {
-            $numbers .= \sprintf(', PR #%d', $prNumber);
-        }
+        $branch = env('GITHUB_HEAD_REF', \exec('git branch --show-current'));
+        $message = self::getRunsMessage();
 
         if ($runNumber = self::getRunsNumber()) {
             $numbers .= \sprintf(', Run: %d', $runNumber);
         }
 
-        return self::$buildName = \sprintf('[%s] %s%s', $branch, $commit, $numbers);
+        return self::$buildName = \sprintf('[%s] %s%s', $branch, $message, $numbers);
     }
 
     /**
@@ -204,7 +198,7 @@ final class BrowserStack
         $runPath = \dirname(__DIR__).'/.runs';
 
         // When it runs on github actions, use its run number instead.
-        if ($runNumber = \env('GITHUB_RUN_NUMBER')) {
+        if ($runNumber = \env('GITHUB_RUN_ATTEMPT')) {
             return (int) $runNumber;
         }
 
@@ -239,16 +233,18 @@ final class BrowserStack
     }
 
     /**
-     * Get PR number.
-     *
-     * @link https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
+     * Get run message.
      */
-    private static function getPullRequestNumber(): ?int
+    private static function getRunsMessage(): string
     {
-        if (\env('GITHUB_EVENT_NAME') !== 'pull_request') {
-            return null;
+        if (\env('GITHUB_EVENT_NAME') === 'pull_request') {
+            return \sprintf('PR #%s', \explode('/', \env('GITHUB_REF'))[2]);
         }
 
-        return (int) \explode('/', \env('GITHUB_REF'))[2];
+        if (self::isDirty()) {
+            return 'uncommited changes';
+        }
+
+        return \exec('echo "`git log -1 --pretty=%s` (`git rev-parse --short HEAD`)"');
     }
 }
