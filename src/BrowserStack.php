@@ -141,6 +141,10 @@ final class BrowserStack
         $branch = env('GITHUB_HEAD_REF', \exec('git branch --show-current'));
         $message = self::getRunsMessage().' '.self::getCommitSha();
 
+        if (empty($branch)) {
+            $branch = env('GITHUB_REF_NAME');
+        }
+
         if ($buildMatrix = env('BUILD_MATRIX')) {
             $numbers .= \sprintf(', Matrix: %s', $buildMatrix);
         }
