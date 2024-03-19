@@ -2,9 +2,8 @@
 
 namespace Creasi\Tests;
 
-use Creasi\DuskBrowserStack\SupportsBrowserStack;
-use Facebook\WebDriver\Chrome\ChromeOptions;
-use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Creasi\DuskBrowserStack\BrowserStack;
+use Creasi\DuskBrowserStack\WithBrowserStack;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Laravel\Dusk\Browser;
 use Orchestra\Testbench\Attributes\RequiresEnv;
@@ -16,17 +15,15 @@ use PHPUnit\Framework\Attributes\Test;
 
 class BrowserStackLocalTest extends TestCase
 {
-    use SupportsBrowserStack;
+    use WithBrowserStack;
     use WithWorkbench;
 
     public static function defineWebDriverOptions()
     {
-        $_ENV['DUSK_DRIVER_URL'] = self::getDriverURL();
+        $_ENV['DUSK_DRIVER_URL'] = BrowserStack::getDriverURL();
         $_ENV['DUSK_HEADLESS_DISABLED'] = true;
 
-        if (static::hasBrowserStackKey()) {
-            static::startBrowserStackLocal();
-        }
+        static::startBrowserStackLocal();
     }
 
     protected function driver(): RemoteWebDriver
@@ -37,11 +34,10 @@ class BrowserStackLocalTest extends TestCase
             DuskOptions::withUI();
         }
 
-        $capabilities = DesiredCapabilities::chrome()
-            ->setCapability(ChromeOptions::CAPABILITY, DuskOptions::getChromeOptions());
+        $capabilities = DuskOptions::getChromeOptions()->toCapabilities();
 
         return RemoteWebDriver::create(
-            self::getDriverURL(),
+            $_ENV['DUSK_DRIVER_URL'],
             $this->withBrowserStackCapabilities($capabilities)
         );
     }
