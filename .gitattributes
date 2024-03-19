@@ -10,10 +10,11 @@
 .gitignore       export-ignore
 .gitmodules      export-ignore
 .vscode          export-ignore
-CHANGELOG.md     export-ignore
 composer.lock    export-ignore
 package.json     export-ignore
 phpunit.xml      export-ignore
 pnpm-lock.yaml   export-ignore
 submodules       export-ignore
+testbench.yaml   export-ignore
 tests            export-ignore
+workbench        export-ignore
