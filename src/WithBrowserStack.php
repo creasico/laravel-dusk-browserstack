@@ -14,11 +14,6 @@ use PHPUnit\Runner\Version;
 trait WithBrowserStack
 {
     /**
-     * Instance of BrowserStack.
-     */
-    private static ?BrowserStack $browserStack = null;
-
-    /**
      * The BrowserStackLocal process instance.
      */
     private static ?LocalProcess $bslocalProcess;
@@ -50,11 +45,7 @@ trait WithBrowserStack
      */
     final protected function browserStack(): BrowserStack
     {
-        if (self::$browserStack) {
-            return self::$browserStack;
-        }
-
-        return self::$browserStack = new BrowserStack(static::$browsers);
+        return new BrowserStack(static::$browsers);
     }
 
     /**
