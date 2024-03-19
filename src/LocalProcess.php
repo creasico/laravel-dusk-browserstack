@@ -16,11 +16,11 @@ class LocalProcess
      */
     protected ?Process $process = null;
 
-    public function __construct(?string $binary, array $arguments = [])
+    public function __construct(array $arguments = [])
     {
-        $binary = \realpath($binary ?? LocalBinary::getPath());
+        $binary = LocalBinary::getPath();
 
-        if (! $binary) {
+        if (! \realpath($binary)) {
             throw new \RuntimeException("Unable to locate the BrowserStackLocal binary: {$binary}");
         }
 
@@ -36,6 +36,9 @@ class LocalProcess
         }
     }
 
+    /**
+     * Start the browserstack-local process.
+     */
     public function start(): void
     {
         $this->process = new Process($this->commands);
@@ -82,6 +85,9 @@ class LocalProcess
         $this->process->stop();
     }
 
+    /**
+     * Check whether browserstack-local process is running.
+     */
     public function isRunning(): bool
     {
         return $this->process?->isRunning() ?? false;
