@@ -49,6 +49,7 @@ class LocalProcess
             $this->process->waitUntil(function ($_, $output): bool {
                 [$_, $message] = \explode('--', $output);
 
+                echo trim($message);
                 if (\str_contains($message, '[ERROR]')) {
                     throw new \RuntimeException(\explode('[ERROR] ', $message)[1]);
                 }
