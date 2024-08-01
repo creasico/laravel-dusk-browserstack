@@ -45,26 +45,15 @@ class LocalProcess
 
         $this->process->start();
 
-        try {
-            $this->process->waitUntil(function ($_, $output): bool {
-                [$_, $message] = \explode('--', $output);
+        $this->process->waitUntil(function ($type, $output): bool {
+            $message = \explode(' -- ', trim($output))[1];
 
-                echo trim($message);
-                if (\str_contains($message, '[ERROR]')) {
-                    throw new \RuntimeException(\explode('[ERROR] ', $message)[1]);
-                }
+            if ($type === Process::ERR) {
+                throw new \RuntimeException($message);
+            }
 
-                if (\str_contains($message, 'Error:')) {
-                    throw new \RuntimeException(\explode('Error: ', $message)[1]);
-                }
-
-                return \str_contains($message, '[SUCCESS]');
-            });
-        } catch (\Throwable $e) {
-            $this->process->stop();
-
-            throw $e;
-        }
+            return \str_contains($message, '[SUCCESS]');
+        });
 
         // We register the below, so if php is exited early, the child
         // process for the server is closed down, rather than left
