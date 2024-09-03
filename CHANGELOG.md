@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.6](https://github.com/creasico/laravel-package/compare/v0.3.5...v0.3.6) (2024-09-03)
+
+
+### Bug Fixes
+
+* fix incomplete error message from browserstack local ([e29d7a7](https://github.com/creasico/laravel-package/commit/e29d7a7edec0b36bee82b9e71021f3dd30acecaa))
+
 ### [0.3.5](https://github.com/creasico/laravel-package/compare/v0.3.4...v0.3.5) (2024-03-19)
 
 
