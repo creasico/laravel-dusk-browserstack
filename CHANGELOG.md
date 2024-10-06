@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.7](https://github.com/creasico/laravel-package/compare/v0.3.6...v0.3.7) (2024-10-06)
+
+
+### Features
+
+* **ci:** update config to use workflow from `projek-xyz` ([#75](https://github.com/creasico/laravel-package/issues/75)) ([9826946](https://github.com/creasico/laravel-package/commit/982694617b5ab3ec65efe97f99b135ffb3d14576))
+
 ### [0.3.6](https://github.com/creasico/laravel-package/compare/v0.3.5...v0.3.6) (2024-09-03)
 
 
