@@ -18,7 +18,9 @@ env:
 jobs:
   prepare:
     name: Prepare
-    uses: feryardiant/actions/.github/workflows/configure.yml@main
+    uses: projek-xyz/actions/.github/workflows/configure.yml@main
+    with:
+      php-version: 8.2
     secrets:
       CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
 
@@ -66,7 +68,7 @@ jobs:
           composer test -- --coverage
 
       - name: Generate reports for CodeClimate
-        if: needs.prepare.outputs.has-codeclimate == 'true'
+        if: needs.prepare.outputs.has-codeclimate == '1'
         id: reports
         env:
           COVERAGE_FILE: tests/reports/clover.xml
@@ -78,17 +80,17 @@ jobs:
 
       - name: Upload tests reports
         uses: actions/upload-artifact@v4
-        if: needs.prepare.outputs.has-codeclimate == 'true'
+        if: needs.prepare.outputs.has-codeclimate == '1'
         with:
           name: test-reports-${{ matrix.php }}
-          path: tests/reports
+          path: tests/reports/codeclimate.*.json
 
   reports:
     name: Reports
     needs: [prepare, tests]
     if: needs.prepare.outputs.should-reports == '1'
-    uses: feryardiant/actions/.github/workflows/report.yml@main
+    uses: projek-xyz/actions/.github/workflows/report.yml@main
     secrets:
       CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
     with:
-      has-codeclimate: ${{ needs.prepare.outputs.has-codeclimate == 'true' }}
+      has-codeclimate: ${{ needs.prepare.outputs.has-codeclimate == '1' }}
