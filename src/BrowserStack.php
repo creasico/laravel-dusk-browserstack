@@ -195,7 +195,7 @@ final class BrowserStack
      */
     private static function isDirty(): bool
     {
-        return (bool) \exec('[[ -n `git status --porcelain` ]] && echo 1');
+        return \exec('git status --porcelain') !== '';
     }
 
     /**
