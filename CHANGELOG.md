@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.8](https://github.com/creasico/laravel-package/compare/v0.3.7...v0.3.8) (2024-12-26)
+
+
+### Features
+
+* switch back to `projek-xyz/actions` workflows ([#76](https://github.com/creasico/laravel-package/issues/76)) ([9196c7d](https://github.com/creasico/laravel-package/commit/9196c7d27d8f98aa33b56fdc2dad10caa16cf05f)), closes [projek-xyz/actions#1](https://github.com/projek-xyz/actions/issues/1)
+* **test:** disable timeout while running tests ([b8f27a6](https://github.com/creasico/laravel-package/commit/b8f27a62a83de33915c6b3cfec104a3e3db30447))
+
+
+### Bug Fixes
+
+* fix missing bash command on github actions ([f542911](https://github.com/creasico/laravel-package/commit/f542911905e9f0881d6245e0d5b9450efb0c20c6))
+
 ### [0.3.7](https://github.com/creasico/laravel-package/compare/v0.3.6...v0.3.7) (2024-10-06)
 
 
