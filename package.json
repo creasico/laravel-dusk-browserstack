@@ -1,19 +1,19 @@
 {
     "version": "0.3.8",
     "private": true,
-    "packageManager": "pnpm@8.5.0",
+    "packageManager": "pnpm@10.33.2",
     "author": "Creasi Developers <developers@creasi.co>",
     "repository": "github:creasico/laravel-package",
     "scripts": {
-        "postinstall": "simple-git-hooks",
-        "release": "standard-version -s"
+        "postinstall": "if [ -z \"$CI\" ]; then simple-git-hooks; fi",
+        "release": "commit-and-tag-version -s"
     },
     "devDependencies": {
-        "@commitlint/cli": "^19.6.1",
-        "@commitlint/config-conventional": "^19.6.0",
-        "lint-staged": "^15.2.11",
-        "simple-git-hooks": "^2.11.1",
-        "standard-version": "^9.5.0"
+        "@commitlint/cli": "^20.5.3",
+        "@commitlint/config-conventional": "^20.5.3",
+        "lint-staged": "^16.4.0",
+        "simple-git-hooks": "^2.13.1",
+        "commit-and-tag-version": "^12.7.1"
     },
     "commitlint": {
         "extends": [
@@ -29,5 +29,5 @@
         "commit-msg": "pnpm exec commitlint --edit $1",
         "pre-commit": "pnpm exec lint-staged --allow-empty"
     },
-    "standard-version": {}
+    "commit-and-tag-version": {}
 }
