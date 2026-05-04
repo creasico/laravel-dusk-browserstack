@@ -12,9 +12,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-
 jobs:
   prepare:
     name: Prepare
@@ -22,7 +19,7 @@ jobs:
     with:
       php-version: 8.2
     secrets:
-      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
   tests:
     name: Test on PHP ${{ matrix.php }}
@@ -51,9 +48,9 @@ jobs:
       - name: Cache Composer dependencies
         uses: actions/cache@v4
         with:
-          path: ${{ needs.prepare.outputs.composer-cache }}
-          key: ${{ runner.os }}-${{ matrix.php }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-${{ matrix.php }}-composer-
+          path: ${{ needs.prepare.outputs.composer-cache-dir }}
+          key: php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: php-${{ matrix.php }}-composer-
 
       - name: Install dependencies
         run: composer update --prefer-dist --no-interaction --no-progress
@@ -67,30 +64,21 @@ jobs:
           composer testbench dusk:browserstack-local
           composer test -- --coverage
 
-      - name: Generate reports for CodeClimate
-        if: needs.prepare.outputs.has-codeclimate == '1'
-        id: reports
+      - name: Generate reports for Coveralls
+        if: needs.prepare.outputs.has-coveralls == '1'
+        uses: coverallsapp/github-action@v2
         env:
-          COVERAGE_FILE: tests/reports/clover.xml
-          CODECLIMATE_REPORT: tests/reports/codeclimate.${{ matrix.php }}.json
-          CC_TEST_REPORTER_URL: ${{ vars.CC_TEST_REPORTER_URL }}
-        run: |
-          curl -LSs $CC_TEST_REPORTER_URL > ./cc-test-reporter && chmod +x ./cc-test-reporter
-          ./cc-test-reporter format-coverage -t clover -o $CODECLIMATE_REPORT $COVERAGE_FILE
-
-      - name: Upload tests reports
-        uses: actions/upload-artifact@v5
-        if: needs.prepare.outputs.has-codeclimate == '1'
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         with:
-          name: test-reports-${{ matrix.php }}
-          path: tests/reports/codeclimate.*.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: php${{ matrix.php }}-laravel${{ matrix.laravel }}-${{ matrix.db }}
+          file: tests/coverage/clover.xml
+          parallel: true
 
   reports:
     name: Reports
     needs: [prepare, tests]
     if: needs.prepare.outputs.should-reports == '1'
     uses: projek-xyz/actions/.github/workflows/report.yml@main
-    secrets:
-      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
     with:
-      has-codeclimate: ${{ needs.prepare.outputs.has-codeclimate == '1' }}
+      has-coveralls: ${{ needs.prepare.outputs.has-coveralls == '1' }}
