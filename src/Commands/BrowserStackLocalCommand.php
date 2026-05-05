@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Creasi\DuskBrowserStack\Commands;
 
 use Creasi\DuskBrowserStack\LocalBinary;
@@ -32,7 +34,7 @@ class BrowserStackLocalCommand extends Command
 
     protected function download(): string
     {
-        $client = new Client();
+        $client = new Client;
         $resource = Utils::tryFopen($archive = LocalBinary::getDirectory().'/browserstack-local.zip', 'w');
 
         try {
