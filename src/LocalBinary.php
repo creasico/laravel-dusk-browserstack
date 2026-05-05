@@ -21,7 +21,7 @@ class LocalBinary
      */
     public static function use(string $path): void
     {
-        static::$path = $path;
+        static::$path = \realpath($path) ?: null;
     }
 
     /**
@@ -37,7 +37,7 @@ class LocalBinary
     /**
      * Retrieve the path to the BrowserStackLocal binary.
      */
-    public static function getPath(): string
+    public static function getPath(): ?string
     {
         if (self::$path) {
             return self::$path;
@@ -49,15 +49,20 @@ class LocalBinary
             $os .= '.exe';
         }
 
-        return self::getDirectory().'/bs-local-'.$os;
+        return self::getDirectory('bs-local-'.$os);
     }
 
     /**
      * Retrieve the download directory for the BrowserStackLocal binary.
      */
-    public static function getDirectory(): string
+    public static function getDirectory(string ...$paths): ?string
     {
-        return \realpath(self::$directory);
+        $paths = collect($paths)
+            ->map(static fn ($path) => \trim($path, '/'))
+            ->filter(static fn ($path) => ! empty($path))
+            ->toArray();
+
+        return \realpath(implode(DIRECTORY_SEPARATOR, [self::$directory, ...$paths])) ?: null;
     }
 
     /**

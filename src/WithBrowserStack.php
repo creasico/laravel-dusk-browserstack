@@ -90,14 +90,10 @@ trait WithBrowserStack
             return;
         }
 
-        static::$bslocalProcess = BrowserStack::createLocalProcess($arguments);
-
-        static::$bslocalProcess->start();
+        static::$bslocalProcess = BrowserStack::startLocalProcess($arguments);
 
         static::afterClass(function () {
-            if (static::$bslocalProcess) {
-                static::$bslocalProcess->stop();
-            }
+            static::$bslocalProcess?->stop();
         });
     }
 }

@@ -81,12 +81,20 @@ final class BrowserStack
     /**
      * Initiate a BrowserStackLocal process.
      */
-    public static function createLocalProcess(array $arguments = []): LocalProcess
+    public static function startLocalProcess(array $arguments = []): ?LocalProcess
     {
-        return new LocalProcess(\array_merge($arguments, [
+        if (! self::hasAccessKey()) {
+            return null;
+        }
+
+        $process = new LocalProcess(\array_merge($arguments, [
             'key' => self::getAccessKey(),
             'local-identifier' => self::getLocalIdentifier(),
         ]));
+
+        $process->start();
+
+        return $process;
     }
 
     /**

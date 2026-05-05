@@ -9,33 +9,32 @@ use Symfony\Component\Process\Process;
 class LocalProcess
 {
     /**
-     * Command reference.
-     */
-    protected array $commands = [];
-
-    /**
      * Process pointer reference.
      */
-    protected ?Process $process = null;
+    protected Process $process;
 
     public function __construct(array $arguments = [])
     {
         $binary = LocalBinary::getPath();
 
-        if (! \realpath($binary)) {
-            throw new \RuntimeException("Unable to locate the BrowserStackLocal binary: {$binary}");
+        if (! $binary) {
+            throw new \RuntimeException('Unable to locate the BrowserStackLocal binary');
         }
 
-        $this->commands = [$binary];
+        $commands = [$binary];
         foreach (\array_filter($arguments) as $key => $value) {
             if (\is_numeric($key)) {
-                $this->commands[] = '--'.\trim($value, '- ');
+                $commands[] = '--'.\trim($value, '- ');
 
                 continue;
             }
 
-            $this->commands[] = \sprintf('--%s=%s', \trim($key, '- '), $value);
+            if (! empty($value)) {
+                $commands[] = \sprintf('--%s=%s', \trim($key, '- '), $value);
+            }
         }
+
+        $this->process = new Process($commands);
     }
 
     /**
@@ -43,8 +42,6 @@ class LocalProcess
      */
     public function start(): void
     {
-        $this->process = new Process($this->commands);
-
         $this->process->start();
 
         $this->process->waitUntil(function ($type, $output): bool {
@@ -70,7 +67,7 @@ class LocalProcess
      */
     public function stop(): void
     {
-        if (! isset($this->process)) {
+        if (! $this->isRunning()) {
             return;
         }
 
