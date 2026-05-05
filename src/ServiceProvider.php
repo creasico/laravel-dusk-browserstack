@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Creasi\DuskBrowserStack;
 
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use Inertia\Inertia;
 use Laravel\Dusk\Browser;
 
 class ServiceProvider extends IlluminateServiceProvider
@@ -30,7 +33,7 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     private function registerDuskMacroForInertia(): void
     {
-        if (! \class_exists(\Inertia\Inertia::class)) {
+        if (! \class_exists(Inertia::class)) {
             return;
         }
 

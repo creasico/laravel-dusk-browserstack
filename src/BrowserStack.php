@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Creasi\DuskBrowserStack;
 
 use Illuminate\Support\Collection;
@@ -79,12 +81,20 @@ final class BrowserStack
     /**
      * Initiate a BrowserStackLocal process.
      */
-    public static function createLocalProcess(array $arguments = []): LocalProcess
+    public static function startLocalProcess(array $arguments = []): ?LocalProcess
     {
-        return new LocalProcess(\array_merge($arguments, [
+        if (! self::hasAccessKey()) {
+            return null;
+        }
+
+        $process = new LocalProcess(\array_merge($arguments, [
             'key' => self::getAccessKey(),
             'local-identifier' => self::getLocalIdentifier(),
         ]));
+
+        $process->start();
+
+        return $process;
     }
 
     /**
@@ -203,17 +213,17 @@ final class BrowserStack
      */
     private static function getRunsNumber(): ?int
     {
-        $runPath = \dirname(__DIR__).'/.runs';
-
         // When it runs on github actions, use its run number instead.
         if ($runNumber = \env('GITHUB_RUN_ATTEMPT')) {
             return (int) $runNumber;
         }
 
-        // Check whether the current branch is dirty.
+        $runPath = \dirname(__DIR__).'/.runs';
+
+        // Check whether the current branch is clean.
         if (! self::isDirty()) {
             // If there's any runs file, it must be from previous run.
-            if (! \file_exists($runPath)) {
+            if (\file_exists($runPath)) {
                 // Get rid of it!
                 \unlink($runPath);
             }
@@ -261,10 +271,8 @@ final class BrowserStack
      */
     private static function getCommitSha(): string
     {
-        if ($githubSha = \env('GITHUB_SHA')) {
-            return \substr($githubSha, 0, 7);
-        }
+        $githubSha = \env('GITHUB_SHA', \exec('git rev-parse HEAD'));
 
-        return \exec('git rev-parse --short HEAD');
+        return \substr($githubSha, 0, 7);
     }
 }
