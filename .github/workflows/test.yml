@@ -71,7 +71,7 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          flag-name: php${{ matrix.php }}-laravel${{ matrix.laravel }}-${{ matrix.db }}
+          flag-name: php-${{ matrix.php }}
           file: tests/coverage/clover.xml
           parallel: true
 

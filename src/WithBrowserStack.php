@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Creasi\DuskBrowserStack;
 
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Laravel\Dusk\TestCase;
 use PHPUnit\Runner\Version;
 
 /**
- * @mixin \Laravel\Dusk\TestCase
+ * @mixin TestCase
  *
  * @property-read static $browsers \Illuminate\Support\Collection<int, Browser>
  */
@@ -87,14 +90,10 @@ trait WithBrowserStack
             return;
         }
 
-        static::$bslocalProcess = BrowserStack::createLocalProcess($arguments);
-
-        static::$bslocalProcess->start();
+        static::$bslocalProcess = BrowserStack::startLocalProcess($arguments);
 
         static::afterClass(function () {
-            if (static::$bslocalProcess) {
-                static::$bslocalProcess->stop();
-            }
+            static::$bslocalProcess?->stop();
         });
     }
 }
