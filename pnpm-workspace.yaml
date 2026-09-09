@@ -1,0 +1,4 @@
+allowBuilds:
+  simple-git-hooks: true
+minimumReleaseAgeExclude:
+  - commit-and-tag-version@13.2.0
