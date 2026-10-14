@@ -1,13 +1,13 @@
-name: Release
+name: Publish
+run-name: "publish(${{ github.ref_name }}): release and wiki from `${{ github.sha }}`"
 
 on:
   push:
-    tags:
-      - 'v*.*.*'
+    tags: ['v*.*.*']
 
 jobs:
   publish:
     name: Publish Release
-    uses: projek-xyz/actions/.github/workflows/release.yml@main
+    uses: projek-xyz/actions/.github/workflows/release.yml@429c195e277caa9fed01a9d550794dc61ad90c1f # main @ 2026-10-14
     permissions:
       contents: write
