@@ -15,7 +15,7 @@ concurrency:
 jobs:
   prepare:
     name: Prepare
-    uses: projek-xyz/actions/.github/workflows/prepare.yml@711af5ee0f1a28b1554022d28d3e147c6a9df1fe # main @ 2026-11-01
+    uses: projek-xyz/actions/.github/workflows/prepare.yml@a84ced1eab6fac0576ed5cdd43f6ee0dfa5044a3 # main @ 2026-11-02
     with:
       php-version: 8.2
     secrets:
@@ -79,6 +79,6 @@ jobs:
     name: Reports
     needs: [prepare, tests]
     if: needs.prepare.outputs.should-reports == '1'
-    uses: projek-xyz/actions/.github/workflows/report.yml@711af5ee0f1a28b1554022d28d3e147c6a9df1fe # main @ 2026-11-01
+    uses: projek-xyz/actions/.github/workflows/report.yml@a84ced1eab6fac0576ed5cdd43f6ee0dfa5044a3 # main @ 2026-11-02
     with:
       has-coveralls: ${{ needs.prepare.outputs.has-coveralls == '1' }}
